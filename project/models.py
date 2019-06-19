@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from project import db
+from datetime import datetime
 
 
 class Employee(db.Model):
@@ -14,7 +15,7 @@ class Employee(db.Model):
     email = db.Column(db.Text)
     mobileNo = db.Column(db.Text)
     salary = db.Column(db.Integer)
-    joiningDate = db.Column(db.Date)
+    joiningDate = db.Column(db.DateTime)
     gender=db.Column(db.Text)
     password=db.Column(db.Text)
 
@@ -25,7 +26,12 @@ class Employee(db.Model):
         self.email = data['email']
         self.mobileNo = data['mobileNo']
         self.salary = data['salary']
-        self.joiningDate = data['joiningDate']
+        try:
+            print('date form user {}'.format(str(data['joiningDate'])))
+            date_dt = datetime.strptime(str(data['joiningDate']), '%d/%m/%Y')
+            self.joiningDate = date_dt
+        except Exception as e:
+            print("ERROR {}".format(e))
         self.gender = data['gender']
         self.password = data['password']
 

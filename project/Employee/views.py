@@ -32,7 +32,6 @@ def login():
 
 @employee_blueprint.route('/registration', methods={'GET', 'POST'})
 def register():
-
     return render_template('registration.html')
 
 

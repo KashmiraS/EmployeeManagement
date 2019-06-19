@@ -1,7 +1,8 @@
 from flask_restful import Resource
 from flask import request
 import json
-from project.models import db,Employee
+from project.models import db, Employee
+from datetime import datetime
 
 
 class Login(Resource):
@@ -9,18 +10,18 @@ class Login(Resource):
         json_data = request.data
 
         if not json_data:
-            return {'message':'No input data provided'}
+            return {'message': 'No input data provided'}
 
         data = json.loads(json_data)
         exists = bool(db.session.query(Employee.employeeId).filter(
             db.and_(Employee.email == data['email'], Employee.password == data['password'])).first())
 
-        responseData=dict()
+        responseData = dict()
         responseData['status'] = exists
 
         return json.dumps(responseData)
 
-    def get(self):#forgot password
+    def get(self):  # forgot password
         json_data = request.data
 
         if not json_data:
@@ -37,7 +38,6 @@ class Login(Resource):
 
 class Verification:
     def get(self):
-
         json_data = request.data
 
         if not json_data:
@@ -57,17 +57,66 @@ class Register(Resource):
 
         json_data = request.data
         data = json.loads(json_data)
-
+        print("JSON FOR REGISTER : {}".format(data))
         is_exist = bool(db.session.query(Employee.employeeId).filter(Employee.email == data['email']).first())
+        print("DATA is exist {}".format(is_exist))
         if not is_exist:
             employee = Employee(data)
+            print(str(employee))
             db.session.add(employee)
             db.session.commit()
+            return {'message': 'Record saved successful!'}
         else:
             return {'message': 'This email id is already exist'}
 
-
     def patch(self):
-        pass
+
+        json_data = request.data
+        data = json.loads(json_data)
+        print("JSON FOR UPDATE : {}".format(data))
+        try:
+            empObj = Employee.query.get(data['employeeId'])
+            if empObj:
+                empObj.firstName = data['firstName']
+                empObj.lastName = data['lastName']
+                empObj.address = data['address']
+                empObj.email = data['email']
+                empObj.mobileNo = data['mobileNo']
+                empObj.salary = data['salary']
+                try:
+                    print('date form user {}'.format(str(data['joiningDate'])))
+                    date_dt = datetime.strptime(str(data['joiningDate']), '%d/%m/%Y')
+                    empObj.joiningDate = date_dt
+                except Exception as e:
+                    print("ERROR {}".format(e))
+                empObj.gender = data['gender']
+                empObj.password = data['password']
+                db.session.commit()
+                return {'message': 'Record updated successfully!'}
+            else:
+                return {'message': 'This employee doesnt exist'}
+        except (Exception):
+            pass
 
 
+class SpecificRecord(Resource):
+    def get(self,empId):
+        employeeRecord = Employee.query.get(empId)
+        obj=employeeRecord.__dict__
+        obj.pop('_sa_instance_state')
+        obj.pop('password')
+        obj['joiningDate'] =str(obj['joiningDate'])
+        print(str(obj))
+        return obj
+
+class AllRecords(Resource):
+    def get(self):
+        allEmployee=Employee.query.all()
+        obj=list()
+        for emp in allEmployee:
+            temp=emp.__dict__
+            temp.pop('_sa_instance_state')
+            temp.pop('password')
+            temp['joiningDate'] = str(temp['joiningDate'])
+            obj.append(temp)
+        return obj
