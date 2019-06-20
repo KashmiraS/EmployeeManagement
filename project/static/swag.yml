@@ -1,0 +1,209 @@
+---
+swagger: '2.0'
+info:
+  description: This system is for Learning.
+  version: 1.0.0
+  title: Employee Management System
+  contact:
+    email:kashmira.sakunde@nitorinfotech.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: http://127.0.0.1:5000/api
+    description: Dev Server
+paths:
+  "/api/login/":
+    post:
+      tags:
+        - Login
+      description: This api is used for employee to get login
+      consumes:
+        - application/json
+      parameters:
+        - name: email
+          in: body
+          description: employee's email id
+        - name: password
+          in: body
+          description: employee's password
+      responses:
+      '200':
+        description: this link will return true or false as result
+        content:
+          application/json:
+            schema:
+            type: object
+            items:
+                properties:
+                  status:
+                    type: boolean
+                    example: true
+
+  "/api/register/":
+    post:
+      tags:
+        - Register
+      description: This api is used for employee registration
+      consumes:
+        - application/json
+      parameters:
+          - name: project
+            in: body
+            type: string
+            description: To perform deletion operation we can use the task id
+            schema:
+              type: "object"
+              properties:
+                firstName:
+                  type: string
+                  example: kashmira
+                lastName:
+                  type: string
+                  example: sakunde
+                address:
+                  type: string
+                  example: pune
+                email:
+                  type: string
+                  example: kashmira@gmail.com
+                mobileNo:
+                  type: string
+                  example: 1234567809
+                salary:
+                  type: string
+                  example: 5000000
+                joiningDate:
+                  type: string
+                  example: 02/03/2019
+                gender:
+                  type: string
+                  example: F
+                password:
+                  type: string
+                  example: sfuafhufhwe
+      responses:
+      '200':
+        description: this link will return true or false as result
+        content:
+          application/json:
+            schema:
+            type: object
+            items:
+              properties:
+                status:
+                  type: boolean
+                  example: true
+    patch:
+      tags:
+        - Register
+      description: This link will help to update the employee details
+      consumes:
+        - application/json
+      parameters:
+        - name: register
+          in: body
+          type: string
+          description: to update employee
+          schema:
+            type: "object"
+            properties:
+              employeeId:
+                type: string
+                example: 1
+              firstName:
+                type: string
+                example: Neha
+              lastName:
+                type: string
+                example: sakunde
+              address:
+                type: string
+                example: pune
+              email:
+                type: string
+                example: neha@gmail.com
+              mobileNo:
+                type: string
+                example: 1234567809
+              salary:
+                type: string
+                example: 5000000
+              joiningDate:
+                type: string
+                example: 02/03/2019
+              gender:
+                type: string
+                example: F
+              password:
+                type: string
+                example: sfuafhufhwe
+      responses:
+        '200':
+          description: this link will return true or false as result
+          content:
+            application/json:
+            schema:
+              type: object
+              properties:
+              message:
+                type: String
+                example: Record updated successfully!/ Error while updating details!
+
+  "/api/get_employee/{empId}":
+    get:
+      tags:
+        - SpecificRecord
+      description: This api will return all details of specific employee
+      parameters:
+      - name: empId
+        in: path
+        description: employee id of specific employee
+        schema:
+          type: string
+          example: 1
+
+      responses:
+      '200':
+        description: success loging
+        content:
+          application/json:
+        schema:
+          type: object
+          items:
+          properties:
+            employeeId:
+              type: string
+              example: 1
+            firstName:
+              type: string
+              example: Neha
+            lastName:
+              type: string
+              example: sakunde
+            address:
+              type: string
+              example: pune
+            email:
+              type: string
+              example: neha@gmail.com
+            mobileNo:
+              type: string
+              example: 1234567809
+            salary:
+              type: string
+              example: 5000000
+            joiningDate:
+              type: string
+              example: 02/03/2019
+            gender:
+              type: string
+              example: F
+  "/api/getAllEmployees":
+    get:
+      tags:
+      - AllRecords
+      description: This api will return details of all employees
+      responses:
+      '200':
+        description: success loging

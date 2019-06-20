@@ -65,7 +65,7 @@ class Register(Resource):
             print(str(employee))
             db.session.add(employee)
             db.session.commit()
-            return {'message': 'Record saved successful!'}
+            return {'message': 'Record saved successfully!'}
         else:
             return {'message': 'This email id is already exist'}
 
@@ -94,7 +94,7 @@ class Register(Resource):
                 db.session.commit()
                 return {'message': 'Record updated successfully!'}
             else:
-                return {'message': 'This employee doesnt exist'}
+                return {'message': 'Error while updating details'}
         except (Exception):
             pass
 
@@ -108,6 +108,7 @@ class SpecificRecord(Resource):
         obj['joiningDate'] =str(obj['joiningDate'])
         print(str(obj))
         return obj
+
 
 class AllRecords(Resource):
     def get(self):
