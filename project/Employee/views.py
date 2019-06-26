@@ -32,6 +32,25 @@ def login():
 
 @employee_blueprint.route('/registration', methods={'GET', 'POST'})
 def register():
+    data = dict()
+    if request.method == 'POST':
+        data['firstName'] = request.form['inputFName']
+        data['lastName'] = request.form['inputLName']
+        data['gender'] = request.form['inlineRadioOptions']
+        data['email'] = request.form['inputEmail']
+        data['mobNo'] = request.form['inputMobNo']
+        data['address'] = request.form['inputAddress']
+        data['joiningDate'] = request.form['joiningDate']
+
+        r = json.loads(requests.post(f'{host_address}/register', json.dumps(data)).text)
+        print(r)
+        is_registered = json.loads(r)
+        print(is_registered)
+        if is_registered["status"]:
+            return redirect(url_for('employee.login'))
+        else:
+            flash('Error while registration')
+
     return render_template('registration.html')
 
 

@@ -65,9 +65,9 @@ class Register(Resource):
             print(str(employee))
             db.session.add(employee)
             db.session.commit()
-            return {'message': 'Record saved successfully!'}
+            return {'status': True}
         else:
-            return {'message': 'This email id is already exist'}
+            return {'status': False}
 
     def patch(self):
 

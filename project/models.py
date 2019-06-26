@@ -26,6 +26,7 @@ class Employee(db.Model):
         self.email = data['email']
         self.mobileNo = data['mobileNo']
         self.salary = data['salary']
+        self.password = data['']
         try:
             print('date form user {}'.format(str(data['joiningDate'])))
             date_dt = datetime.strptime(str(data['joiningDate']), '%d/%m/%Y')
