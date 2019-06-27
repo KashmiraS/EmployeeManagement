@@ -75,17 +75,32 @@ def profile():
 
 
 @employee_blueprint.route('/salary', methods={'GET', 'POST'})
-def profile():
+def view_salary():
     empId = session["id"]
     salary_details = Salary.query.get()
-    return render_template('profile.html', salary_details=salary_details)
+    return render_template('salary.html', salary_details=salary_details)
 
 
 @employee_blueprint.route('/records', methods={'GET', 'POST'})
 def view_records():
     all_employee_list = json.loads((requests.get(f'{host_address}/getAllEmployees')).text)
     print(all_employee_list)
-    return render_template('manage_employees.html',all_employee_list=all_employee_list)
+    if request.method == 'POST':
+        if request.form['view_button'] == 'view':
+            empId = session["id"]
+            employee = json.loads((requests.get(f'{host_address}/get_employee/{empId}')).text)
+            return render_template('profile.html', employee=employee)
+        elif request.form['update_button'] == 'update':
+            empId = session["id"]
+            employee = json.loads((requests.get(f'{host_address}/get_employee/{empId}')).text)
+            return render_template('register.html', employee=employee)
+        elif request.form['delete_button'] == 'delete':
+            empId = session["id"]
+            flash('Record deleted successfully!')
+            json.loads((requests.delete(f'{host_address}/get_employee/{empId}')).text)
+            pass
+    elif request.method == 'GET':
+        return render_template('manage_employees.html',len=len(all_employee_list),all_employee_list=all_employee_list)
 
 
 @employee_blueprint.route('/edit_profile', methods={'GET', 'POST'})

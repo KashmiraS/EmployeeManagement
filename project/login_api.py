@@ -106,6 +106,7 @@ class Register(Resource):
 
 
 class SpecificRecord(Resource):
+
     def get(self,empId):
         employeeRecord = Employee.query.get(empId)
         obj=employeeRecord.__dict__
@@ -114,6 +115,10 @@ class SpecificRecord(Resource):
         obj['joiningDate'] =str(obj['joiningDate'])
         print(str(obj))
         return obj
+
+    def delete(self,empId):
+        Employee.query.filter(Employee.employeeId == empId).delete()
+        db.session.commit()
 
 
 class AllRecords(Resource):
