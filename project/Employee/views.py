@@ -1,9 +1,9 @@
 from project import host_address
-from flask import render_template, Blueprint,redirect,url_for,request,flash
+from flask import render_template, Blueprint, redirect, url_for, request, flash, session
 from project.Employee.forms import LoginForm
-from project.models import Employee,db
+from project.models import Salary
 import requests, json
-
+from datetime import datetime
 
 employee_blueprint = Blueprint("employee", __name__, template_folder="templates/Employee")
 
@@ -22,7 +22,9 @@ def login():
         print(r)
         exists = json.loads(r)
         print(exists)
+        session['id'] = int(exists["empId"][0])
         if exists["status"]:
+            print(f'login id in profile {session["id"]}')
             return redirect(url_for('employee.dashboard'))
         else:
             flash('Invalid username or password')
@@ -38,15 +40,19 @@ def register():
         data['lastName'] = request.form['inputLName']
         data['gender'] = request.form['inlineRadioOptions']
         data['email'] = request.form['inputEmail']
-        data['mobNo'] = request.form['inputMobNo']
+        data['mobileNo'] = request.form['inputMobNo']
         data['address'] = request.form['inputAddress']
-        data['joiningDate'] = request.form['joiningDate']
+        date_dt = datetime.strptime(str(request.form['joiningDate']), '%Y-%m-%d')
+        data['joiningDate'] = str(date_dt)
+        data['password'] = request.form['inputPassword']
+        data['salary'] = '0'
 
-        r = json.loads(requests.post(f'{host_address}/register', json.dumps(data)).text)
+        r = requests.post(f'{host_address}/register', json.dumps(data)).text
         print(r)
         is_registered = json.loads(r)
         print(is_registered)
         if is_registered["status"]:
+            flash('You are registered successfully')
             return redirect(url_for('employee.login'))
         else:
             flash('Error while registration')
@@ -61,12 +67,25 @@ def dashboard():
 
 @employee_blueprint.route('/profile', methods={'GET', 'POST'})
 def profile():
-    return render_template('profile.html')
+    empId = session["id"]
+    print(f'login id in profile {empId}')
+    print(f'{host_address}/get_employee/{empId}')
+    employee = json.loads((requests.get(f'{host_address}/get_employee/{empId}')).text)
+    return render_template('profile.html', employee=employee)
+
+
+@employee_blueprint.route('/salary', methods={'GET', 'POST'})
+def profile():
+    empId = session["id"]
+    salary_details = Salary.query.get()
+    return render_template('profile.html', salary_details=salary_details)
 
 
 @employee_blueprint.route('/records', methods={'GET', 'POST'})
 def view_records():
-    return render_template('records.html')
+    all_employee_list = json.loads((requests.get(f'{host_address}/getAllEmployees')).text)
+    print(all_employee_list)
+    return render_template('manage_employees.html',all_employee_list=all_employee_list)
 
 
 @employee_blueprint.route('/edit_profile', methods={'GET', 'POST'})

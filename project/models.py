@@ -14,10 +14,10 @@ class Employee(db.Model):
     address = db.Column(db.Text)
     email = db.Column(db.Text)
     mobileNo = db.Column(db.Text)
-    salary = db.Column(db.Integer)
     joiningDate = db.Column(db.DateTime)
-    gender=db.Column(db.Text)
-    password=db.Column(db.Text)
+    gender = db.Column(db.Text)
+    password = db.Column(db.Text)
+    payment = db.relationship('Salary')
 
     def __init__(self,data):
         self.firstName = data['firstName']
@@ -25,8 +25,7 @@ class Employee(db.Model):
         self.address = data['address']
         self.email = data['email']
         self.mobileNo = data['mobileNo']
-        self.salary = data['salary']
-        self.password = data['']
+
         try:
             print('date form user {}'.format(str(data['joiningDate'])))
             date_dt = datetime.strptime(str(data['joiningDate']), '%d/%m/%Y')
@@ -35,5 +34,30 @@ class Employee(db.Model):
             print("ERROR {}".format(e))
         self.gender = data['gender']
         self.password = data['password']
+
+
+class Salary(db.Model):
+    __table_name__ = "salary"
+
+    salaryId = db.Column(db.Integer, primary_key=True)
+    empId = db.Column(db.Integer,db.ForeignKey('employee.employeeId'),nullable=False)
+    workingDays = db.Column(db.Integer)
+    paymentMode = db.Column(db.Text)
+    basicSalary = db.Column(db.Float)
+    pf = db.Column(db.Float)
+    totalEarnings = db.Column(db.Float)
+    professionalTax = db.Column(db.Float)
+    netSalary = db.Column(db.Float)
+
+    def __init__(self,data):
+        self.empId = data['employeeId']
+        self.workingDays = data['workingDays']
+        self.paymentMode = data['paymentMode']
+        self.basicSalary = data['basicSalary']
+        self.pf = data['pf']
+        self.totalEarnings = data['totalEarnings']
+        self.professionalTax = data['professionalTax']
+        self.netSalary = data['netSalary']
+
 
 

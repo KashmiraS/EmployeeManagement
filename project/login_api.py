@@ -1,5 +1,5 @@
 from flask_restful import Resource
-from flask import request
+from flask import request,session
 import json
 from project.models import db, Employee
 from datetime import datetime
@@ -15,9 +15,14 @@ class Login(Resource):
         data = json.loads(json_data)
         exists = bool(db.session.query(Employee.employeeId).filter(
             db.and_(Employee.email == data['email'], Employee.password == data['password'])).first())
+        if exists:
+            session['id'] = db.session.query(Employee.employeeId).filter(
+            db.and_(Employee.email == data['email'], Employee.password == data['password'])).first()
+            print(f'login id {session["id"]}')
 
         responseData = dict()
         responseData['status'] = exists
+        responseData['empId']= session['id']
 
         return json.dumps(responseData)
 
@@ -65,9 +70,9 @@ class Register(Resource):
             print(str(employee))
             db.session.add(employee)
             db.session.commit()
-            return {'status': True}
+            return {'status': 'True'}
         else:
-            return {'status': False}
+            return {'status': 'False'}
 
     def patch(self):
 
@@ -83,6 +88,7 @@ class Register(Resource):
                 empObj.email = data['email']
                 empObj.mobileNo = data['mobileNo']
                 empObj.salary = data['salary']
+
                 try:
                     print('date form user {}'.format(str(data['joiningDate'])))
                     date_dt = datetime.strptime(str(data['joiningDate']), '%d/%m/%Y')
