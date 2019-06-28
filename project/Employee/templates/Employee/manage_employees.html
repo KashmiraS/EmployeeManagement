@@ -1,8 +1,51 @@
-{% extends 'base.html' %}
+{%extends 'base.html'%}
 {% block content %}
-<ol>
+<div class="jumbotron display-4">List of Employee
+
+</div>
+<div class="container ">
+<a href="{{url_for('employee.add_employee')}}">
+        <button
+               class="btn btn-sm btn-primary btn-block" type="submit" id="add_button" name="add_button"
+                value="add">Add Employee
+        </button>
+    </a>
+
     {% for i in range(0,len) %}
-    <li> {{all_employee_list[i]}}</li>
-    {% endfor %}
-</ol>
+    <p>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <img class='col-md-2 rounded ' style='width:2%;height:2%'
+                         src="{{ url_for('static', filename='images/profile.png') }}">
+                    <div class="col-md-10">
+                        <h5 class="card-title">{{all_employee_list[i].firstName}} {{all_employee_list[i].lastName}}</h5>
+    <p class="card-text">
+        <span>{{all_employee_list[i].mobileNo}}</span>
+        <span>
+            <a href="{{url_for('employee.view',empId=all_employee_list[i].employeeId)}}">
+                <button
+                        class="badge badge-dark" type="submit" id="view_button" onclick="" name="view_button"
+                        value="view">View</button></a>
+            <a href="{{url_for('employee.edit',empId=all_employee_list[i].employeeId)}}">
+                            <button
+                                    class="badge badge-success" type="submit" id="update_button" name="update_button"
+                                    value="update">Edit</button></a>
+            <a href="{{url_for('employee.delete',empId=all_employee_list[i].employeeId)}}">
+                            <button
+                                    class="badge badge-danger" type="submit" id="delete_button" name="delete_button"
+                                    value="delete">Delete</button></a>
+        </span>
+    </p>
+</div>
+</div>
+</div>
+</div>
+
+</p>
+{% endfor %}
+
+
+</div>
+
 {% endblock %}

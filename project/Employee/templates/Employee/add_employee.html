@@ -21,17 +21,8 @@
     </style>
 </head>
 <body>
-{% with messages = get_flashed_messages() %}
-{% if messages %}
-<ul class=flashes>
-    {% for message in messages %}
-    <li>{{ message }}</li>
-    {% endfor %}
-</ul>
-{% endif %}
-{% endwith %}
 <div class="jumbotron">
-    <div class="display-3">Registration</div>
+    <div class="display-3">Add Employee</div>
 </div>
 <div class="container">
     <form method="post">

@@ -1,7 +1,6 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from project import db
 from datetime import datetime
+
 
 
 class Employee(db.Model):
@@ -17,7 +16,7 @@ class Employee(db.Model):
     joiningDate = db.Column(db.DateTime)
     gender = db.Column(db.Text)
     password = db.Column(db.Text)
-    payment = db.relationship('Salary')
+    payment = db.relationship('Salary',backref='Salary',uselist=False,passive_deletes=True)
 
     def __init__(self,data):
         self.firstName = data['firstName']
@@ -36,11 +35,14 @@ class Employee(db.Model):
         self.password = data['password']
 
 
+
 class Salary(db.Model):
     __table_name__ = "salary"
 
     salaryId = db.Column(db.Integer, primary_key=True)
-    empId = db.Column(db.Integer,db.ForeignKey('employee.employeeId'),nullable=False)
+    empId = db.Column(db.Integer,db.ForeignKey('employee.employeeId',ondelete='CASCADE'),nullable=False)
+    # employeeObj = db.relationship("employee", backref="salary")
+    #employeeRef = db.relationship('Employee', backref=backref("salary", cascade="all,delete"))
     workingDays = db.Column(db.Integer)
     paymentMode = db.Column(db.Text)
     basicSalary = db.Column(db.Float)
@@ -58,6 +60,5 @@ class Salary(db.Model):
         self.totalEarnings = data['totalEarnings']
         self.professionalTax = data['professionalTax']
         self.netSalary = data['netSalary']
-
 
 

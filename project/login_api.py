@@ -5,6 +5,8 @@ from project.models import db, Employee
 from datetime import datetime
 
 
+
+
 class Login(Resource):
     def post(self):
         json_data = request.data

@@ -1,9 +1,81 @@
 {% extends 'base.html' %}
 {% block content %}
-{{salary_details.workingDays}}
-{{salary_details.paymentMode}}
-{{salary_details.basicSalary}} {{salary_details.pf}}
-{{salary_details.professionalTax}} {{salary_details.totalEarnings}}
-{{salary_details.netSalary}}
-
+<div class="jumbotron">
+    <div class="display-4">Salary Details</div>
+</div>
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+             <div class="row">
+                        <div class="col-12">
+                                <div class="tab-pane fade show active" id="basicInfo" role="tabpanel"
+                                     aria-labelledby="basicInfo-tab">
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Working Days</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            {{salary_details.workingDays}}
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Payment mode</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                             {{salary_details.paymentMode}}
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Basic Salary</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            {{salary_details.basicSalary}}
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">PF</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            {{salary_details.pf}}
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Professional Tax</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            {{salary_details.professionalTax}}
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Total Earning</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            {{salary_details.totalEarnings}}
+                                        </div>
+                                    </div>
+                                    <hr/>
+                                    <div class="row">
+                                        <div class="col-sm-3 col-md-2 col-5">
+                                            <label style="font-weight:bold;">Net Salary</label>
+                                        </div>
+                                        <div class="col-md-8 col-6">
+                                            {{salary_details.netSalary}}
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+             </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

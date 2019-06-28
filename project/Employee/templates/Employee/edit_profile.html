@@ -31,21 +31,22 @@
 {% endif %}
 {% endwith %}
 <div class="jumbotron">
-    <div class="display-3">Registration</div>
+    <div class="display-3">Edit Profile</div>
 </div>
 <div class="container">
     <form method="post">
         <div class="container card card-body col-md-4 form-registration">
             <input type="text" name="inputFName" id="inputFName" class="margin5 form-control form-field"
-                   placeholder="First Name"
+                   placeholder="First Name" value="{{employee.firstName}}"
                    required autofocus="">
             <input type="text" name="inputLName" id="inputLName" class="margin5 form-control" placeholder="Last Name"
-                   required>
+                   required value="{{employee.lastName}}">
             <div style="padding-left:40px" class="margin5">
                 <label class="form-label">Gender :</label>
+                {% if employee.gender == %}
                 <div class="form-check form-check-inline">
                     <input class=" form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
-                           value="Male">
+                           value="Male" checked="">
                     <label class="form-check-label" for="inlineRadio1">Male</label>
                 </div>
                 <div class="form-check  form-check-inline">
@@ -55,16 +56,16 @@
                 </div>
             </div>
             <input type="email" name="inputEmail" id="inputEmail" class="margin5 form-control" placeholder="Email"
-                   required>
+                   required value="{{employee.email}}">
             <input type="tel" name="inputMobNo" id="inputMobNo" class="margin5 form-control" placeholder="Mobile No"
-                   required>
+                   required value="{{employee.mobileNo}}">
             <input type="text" name="inputAddress" id="inputAddress" class="margin5 form-control" placeholder="Address">
             <input type="date" name="joiningDate" id="joiningDate" class="margin5 form-control"
                    placeholder="Joining Date"
                    required>
             <input type="password" name="inputPassword" id="inputPassword" class="form-control margin5"
                    placeholder="Password"
-                   required>
+                   required value="{{employee.password}}">
             <button class="btn btn-primary margin5" type="submit">Sign up</button>
         </div>
     </form>
